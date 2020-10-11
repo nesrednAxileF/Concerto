@@ -10,9 +10,6 @@ namespace Model.DTO
     [Table("MsRole")]
     public class RoleDTO : BaseModel
     {
-        [Key]
-        [Column("Id")]
-        public int Id { get; set; }
         [Column("Name")]
         public string Name { get; set; }
     }

@@ -10,9 +10,6 @@ namespace Model.DTO
     [Table("MsUser")]
     public class UserDTO : BaseModel
     {
-        [Key]
-        [Column("Id")]
-        public int Id { get; set; }
         [Column("Email")]
         public string Email { get; set; }
         [Column("Password")]

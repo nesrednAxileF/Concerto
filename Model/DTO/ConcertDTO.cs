@@ -10,9 +10,6 @@ namespace Model.DTO
     [Table("MsConcert")]
     public class ConcertDTO : BaseModel
     {
-        [Key]
-        [Column("Id")]
-        public int Id { get; set; }
         [Column("Title")]
         public string Title{ get; set; }
         [Column("Description")]

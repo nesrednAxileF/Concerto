@@ -10,11 +10,11 @@ namespace Model.DTO
     [Table("TrSession")]
     public class SessionDTO : BaseModel
     {
-        [Key]
-        [Column("Id")]
-        public int Id { get; set; }
         [Column("ConcertId")]
         public int ConcertId { get; set; }
+
+        [Column("UserId")]
+        public int UserId { get; set; }
         [Column("TimeIn")]
         public DateTime TimeIn { get; set; }
         [Column("TimeOut")]

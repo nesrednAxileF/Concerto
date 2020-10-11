@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Model.DBConstraint;
 using Model.DTO;
 using Model.DTO.Base;
+using Model.DTO.DB.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,8 +23,7 @@ namespace Repository.Context
 		public DbSet<SessionDTO> sessionDTOs{ get; set; }
 		public DbSet<TicketDTO> ticketDTOs{ get; set; }
 		public DbSet<UserDTO> userDTOs{ get; set; }
-		
-
+		public DbSet<ExecuteResultDTO> ExecuteResultDbSet { get; set; }
 		public override int SaveChanges()
 		{
 			OnBeforeSave();

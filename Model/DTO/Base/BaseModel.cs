@@ -7,6 +7,8 @@ namespace Model.DTO.Base
 {
 	public class BaseModel
 	{
+		[Column("Id")]
+		public int ID { get; set; }
 		[Column("UserIn")]
 		public string UserIn { get; private set; }
 		[Column("DateIn")]

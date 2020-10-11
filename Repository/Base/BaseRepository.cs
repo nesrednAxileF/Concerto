@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Model.DBConstraint;
 using Model.DTO.Base;
 using Repository.Context;
 using System;
@@ -37,20 +38,16 @@ namespace Repository.Base
             IEnumerable<TEntity> entities = Context.Set<TEntity>().Where(x => !x.StrSc.Equals(StrSC.Deactive));
             return entities;
         }
-        //public TEntity Find(int ID,string ColoumnIDName)
-        // {
-        //    if (ID == -1 && typeof(EnableAllValue<TEntity>).IsAssignableFrom(typeof(TEntity)))
-        //    {
-        //        var entityType = typeof(TEntity);
-        //        EnableAllValue<TEntity> allValuedEntity = (EnableAllValue<TEntity>)Activator.CreateInstance(entityType);
-        //        return allValuedEntity.GetAllValuedEntity();
-        //    }
-        //    return Context.Set<TEntity>()
-        //        .Where(x => x.ID.Equals(ID))
-        //        .Where(x => !x.StrSc.Equals(StrSC.Deactive))
-        //        .FirstOrDefault();
-        //}
-
+        public TEntity Find(int ID)
+        {
+            if (ID == -1 && typeof(EnableAllValue<TEntity>).IsAssignableFrom(typeof(TEntity)))
+            {
+                var entityType = typeof(TEntity);
+                EnableAllValue<TEntity> allValuedEntity = (EnableAllValue<TEntity>)Activator.CreateInstance(entityType);
+                return allValuedEntity.GetAllValuedEntity();
+            }
+            return Context.Set<TEntity>().Where(x => x.ID.Equals(ID)).Where(x => !x.StrSc.Equals(BaseConstraint.StrSC.Active)).FirstOrDefault();
+        }
         public TEntity Insert(TEntity entity)
         {
             Context.Add(entity);
@@ -81,21 +78,20 @@ namespace Repository.Base
                 Context.SaveDeletion();
             }
         }
-        //public void DeleteMultiple(List<int> IDs)
-        //{
-        //    bool Recorded = false;
-        //    IDs.ForEach(id =>
-        //    {
-        //        TEntity entity = this.Find(id);
-        //        if (entity != null)
-        //        {
-        //            Context.Remove(entity);
-        //            Recorded = true;
-        //        }
-        //    });
-        //    if (Recorded)
-        //        Context.SaveDeletion();
-        //}
-
+        public void DeleteMultiple(List<int> IDs)
+        {
+            bool Recorded = false;
+            IDs.ForEach(id =>
+            {
+                TEntity entity = this.Find(id);
+                if (entity != null)
+                {
+                    Context.Remove(entity);
+                    Recorded = true;
+                }
+            });
+            if (Recorded)
+                Context.SaveDeletion();
+        }
     }
 }
