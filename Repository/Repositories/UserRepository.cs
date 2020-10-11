@@ -1,4 +1,5 @@
-﻿using Model.DBConstraint;
+﻿using Microsoft.EntityFrameworkCore;
+using Model.DBConstraint;
 using Model.DTO;
 using Repository.Base;
 using Repository.Context;
@@ -6,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
     public interface IUserRepository : IRepository<UserDTO>
     {
         UserDTO FindByEmail(string Email);
+        Task<UserDTO> FindByEmailAndPassword(string Email, string Password);
     }
     public class UserRepository : BaseRepository<UserDTO>, IUserRepository
     {
@@ -27,6 +30,14 @@ namespace Repository.Repositories
                 x.StrSc.Equals(BaseConstraint.StrSC.Active))
                 .FirstOrDefault();
         }
-       
+
+        public async Task<UserDTO> FindByEmailAndPassword(string Email, string Password)
+        {
+            return await Context.userDTOs
+                .Where(x => x.Email.Equals(Email)
+                            && x.Password.Equals(Password)
+                            && x.StrSc.Equals(BaseConstraint.StrSC.Active))
+                .FirstOrDefaultAsync();
+        }
     }
 }

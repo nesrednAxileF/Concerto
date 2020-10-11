@@ -7,6 +7,8 @@ using Model.DTO.DB.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Repository.Context
 {
@@ -30,11 +32,23 @@ namespace Repository.Context
 			return base.SaveChanges();
 		}
 
+        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            OnBeforeSave();
+            return await base.SaveChangesAsync();
+        }
+
 		public int SaveDeletion()
 		{
 			OnBeforeDelete();
 			return base.SaveChanges();
 		}
+
+        public async Task<int> SaveDeletionAsync()
+        {
+            OnBeforeDelete();
+            return await base.SaveChangesAsync();
+        }
 
 		public override EntityEntry<TEntity> Remove<TEntity>(TEntity entity)
 		{

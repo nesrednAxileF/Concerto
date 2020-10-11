@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Concerto.Helper.APIAttribute;
 using Microsoft.AspNetCore.Mvc;
+using Model.DTO;
+using Repository.Repositories;
 
 namespace Concerto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RequireApplicationKeyHeader]
     public class ValuesController : ControllerBase
     {
+        private readonly IRoleRepository roleRepository;
+
+        public ValuesController(IRoleRepository roleRepository)
+        {
+            this.roleRepository = roleRepository;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -40,6 +50,13 @@ namespace Concerto.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpGet("roles")]
+        public ActionResult<IEnumerable<string>> GetRoles()
+        {
+            List<RoleDTO> roles = roleRepository.FindAll().ToList();
+            return roles.Select(x => x.Name).ToList();
         }
     }
 }

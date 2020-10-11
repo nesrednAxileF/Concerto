@@ -12,12 +12,13 @@ namespace Repository.Context
     public class DbContextFactory : IDbContextFactory
     {
         private readonly DbContextOptions<ConcertoDbContext> options;
-        private readonly IApplicationSessionDataAccessor applicationSessionDataAccessor;
+        //private readonly IApplicationSessionDataAccessor applicationSessionDataAccessor;
         public DbContextFactory(DbContextOptions<ConcertoDbContext> options
-            , IApplicationSessionDataAccessor applicationSessionDataAccessor)
+            //, IApplicationSessionDataAccessor applicationSessionDataAccessor
+            )
         {
             this.options = options;
-            this.applicationSessionDataAccessor = applicationSessionDataAccessor;
+            //this.applicationSessionDataAccessor = applicationSessionDataAccessor;
         }
 
         public DbContext GetContext()

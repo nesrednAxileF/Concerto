@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using static Model.DBConstraint.BaseConstraint;
 
 namespace Repository.Base
@@ -92,6 +93,45 @@ namespace Repository.Base
             });
             if (Recorded)
                 Context.SaveDeletion();
+        }
+
+        public async Task<IEnumerable<TEntity>> FindAllAsync() =>
+            await Context.Set<TEntity>().Where(x => !x.StrSc.Equals(StrSC.Deactive)).ToListAsync();
+
+        public async Task<TEntity> FindAsync(int ID)
+        {
+            if (ID == -1 && typeof(EnableAllValue<TEntity>).IsAssignableFrom(typeof(TEntity)))
+            {
+                var entityType = typeof(TEntity);
+                EnableAllValue<TEntity> allValuedEntity = (EnableAllValue<TEntity>)Activator.CreateInstance(entityType);
+                return allValuedEntity.GetAllValuedEntity();
+            }
+            return await Context.Set<TEntity>().Where(x => x.ID.Equals(ID)).Where(x => !x.StrSc.Equals(BaseConstraint.StrSC.Active)).FirstOrDefaultAsync();
+        }
+
+        public async Task<TEntity> InsertAsync(TEntity entity)
+        {
+            await Context.AddAsync(entity);
+            await Context.SaveChangesAsync();
+            Context.Entry(entity).State = EntityState.Detached;
+            return entity;
+        }
+
+        public async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            Context.Update(entity);
+            await Context.SaveChangesAsync();
+            Context.Entry(entity).State = EntityState.Detached;
+            return entity;
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            if (entity != null)
+            {
+                Context.Remove(entity);
+                await Context.SaveDeletionAsync();
+            }
         }
     }
 }

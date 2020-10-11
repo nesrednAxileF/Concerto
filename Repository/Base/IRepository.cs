@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Repository.Base
 {
@@ -14,5 +15,11 @@ namespace Repository.Base
         IEnumerable<TEntity> InsertMultiple(List<TEntity> entities);
         void Delete(TEntity entity);
         //void DeleteMultiple(List<int> IDs);
+
+        Task<IEnumerable<TEntity>> FindAllAsync();
+        Task<TEntity> FindAsync(int ID);
+        Task<TEntity> InsertAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
     }
 }
